@@ -1,0 +1,30 @@
+<div th:if="${alerts.isEmpty()}" xmlns:th="http://www.w3.org/1999/xhtml">
+    <p style="text-align: center; color: #666; padding: 40px;">
+        No active alert
+    </p>
+</div>
+
+<div th:each="alert : ${alerts}" class="alert-item" xmlns:th="http://www.w3.org/1999/xhtml">
+    <h3 th:text="${alert.title}">Title</h3>
+    <p th:text="${alert.description}" th:if="${alert.description}">Description</p>
+
+    <div class="alert-meta">
+        <span th:if="${alert.type.name() == 'ONE_TIME'}">
+            📅 One time -
+            <span th:text="${#temporals.format(alert.triggerAt, 'dd/MM/yyyy HH:mm')}"></span>
+        </span>
+        <span th:if="${alert.type.name() == 'RECURRING'}">
+            🔄 Recurring - <code th:text="${alert.cronExpression}"></code>
+        </span>
+        <br/>
+        <small>Created at <span th:text="${#temporals.format(alert.createdAt, 'dd/MM/yyyy HH:mm')}"></span></small>
+    </div>
+
+    <button class="delete"
+            th:attr="hx-delete='/alerts/' + ${alert.id}"
+            hx-confirm="Delete this alert ?"
+            hx-target="closest .alert-item"
+            hx-swap="outerHTML swap:1s">
+        🗑️ Supprimer
+    </button>
+</div>

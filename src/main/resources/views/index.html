@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:hx-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #f5f5f5;
+        }
+        h1, h2 { color: #333; }
+        .alert-item {
+            background: white;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .alert-item h3 { margin-top: 0; color: #2563eb; }
+        .alert-meta { color: #666; font-size: 0.9em; }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover { background: #1d4ed8; }
+        button.delete {
+            background: #dc2626;
+            padding: 5px 10px;
+            font-size: 0.9em;
+        }
+        button.delete:hover { background: #b91c1c; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+<h1>🔔 Alerts</h1>
+
+<div id="alerts-list"
+     hx-get="/alerts/list"
+     hx-trigger="load, alertCreated from:body, alertDeleted from:body"
+     hx-swap="innerHTML">
+</div>
+
+<h2>➕ New alert</h2>
+<form hx-post="/alerts"
+      hx-target="#alerts-list"
+      hx-on::after-request="this.reset(); toggleFields()"
+      onsubmit="return prepareForm(event)">
+
+    <label>Title *</label>
+    <input name="title" placeholder="Ex: Team meeting" required>
+
+    <label>Description</label>
+    <textarea name="description" rows="3" placeholder="Details (optional)"></textarea>
+
+    <label>Type *</label>
+    <select name="type" id="alertType" onchange="toggleFields()" required>
+        <option value="ONE_TIME">One time</option>
+        <option value="RECURRING">Recurring (cron)</option>
+    </select>
+
+    <div id="oneTimeFields">
+        <label>Date and time *</label>
+        <input type="datetime-local" id="triggerAtInput" step="1">
+        <input type="hidden" name="triggerAt" id="triggerAtHidden">
+    </div>
+
+    <div id="recurringFields" class="hidden">
+        <label>Cron expression *</label>
+        <input name="cronExpression" id="cronInput" placeholder="Ex: 0 9 * * MON (Every monday at 9h)">
+        <small style="color: #666;">
+            Unix format cron: minute hour date monthe day-week<br>
+            Example: <code>0 9 * * *</code> (Everyday at 9h),
+            <code>0 14 * * 1-5</code> (lun-ven 14h)
+        </small>
+    </div>
+
+    <button type="submit">Create the alert</button>
+</form>
+
+<script src="/js/notifications.js"></script>
+<script>
+    function toggleFields() {
+        const type = document.getElementById('alertType').value;
+        const oneTime = document.getElementById('oneTimeFields');
+        const recurring = document.getElementById('recurringFields');
+        const triggerInput = document.getElementById('triggerAtInput');
+        const cronInput = document.getElementById('cronInput');
+
+        if (type === 'ONE_TIME') {
+            oneTime.classList.remove('hidden');
+            recurring.classList.add('hidden');
+            triggerInput.required = true;
+            cronInput.required = false;
+        } else {
+            oneTime.classList.add('hidden');
+            recurring.classList.remove('hidden');
+            triggerInput.required = false;
+            cronInput.required = true;
+        }
+    }
+
+    toggleFields();
+</script>
+</body>
+</html>
