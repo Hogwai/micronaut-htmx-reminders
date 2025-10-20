@@ -15,9 +15,11 @@ Reminder application with real-time notifications using Micronaut, HTMX, WebSock
 - Gradle
 
 ## Running the app
-2. Launch the app
+1. Launch the app
+
 ```bash
 ./gradlew run
 ```
 
-3. Open [http://localhost:8080/alerts](http://localhost:8080/alerts)
+2. Open [http://localhost:8080/alerts](http://localhost:8080/alerts)
+3. You must grant the notification permission to the app: [Firefox](https://support.mozilla.org/en-US/kb/push-notifications-firefox), [Chrome](https://support.google.com/chrome/answer/3220216?hl=en-en)
