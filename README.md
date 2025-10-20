@@ -1,31 +1,23 @@
-## Micronaut 4.9.4 Documentation
+# Micronaut Reminder Application
 
-- [User Guide](https://docs.micronaut.io/4.9.4/guide/index.html)
-- [API Reference](https://docs.micronaut.io/4.9.4/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/4.9.4/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+Reminder application with real-time notifications using Micronaut, HTMX, WebSocket and a bit of JavaScript.
 
-- [Micronaut Gradle Plugin documentation](https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/)
-- [GraalVM Gradle Plugin documentation](https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html)
-- [Shadow Gradle Plugin](https://gradleup.com/shadow/)
-## Feature serialization-jackson documentation
+## Technical stack
 
-- [Micronaut Serialization Jackson Core documentation](https://micronaut-projects.github.io/micronaut-serialization/latest/guide/)
+- **Backend**: Micronaut 4 (Java 21)
+- **Frontend**: Htmx + minimal JavaScript
+- **Database**: H2
+- **WebSocket**: Real-time notifications
+- **Cron**: cron-utils for recurring alerts
 
+## Prerequisites
+- Java 21
+- Gradle
 
-## Feature micronaut-aot documentation
+## Running the app
+2. Launch the app
+```bash
+./gradlew run
+```
 
-- [Micronaut AOT documentation](https://micronaut-projects.github.io/micronaut-aot/latest/guide/)
-
-
-## Feature jdbc-hikari documentation
-
-- [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
-
-
-## Feature reactor documentation
-
-- [Micronaut Reactor documentation](https://micronaut-projects.github.io/micronaut-reactor/snapshot/guide/index.html)
-
-
+3. Open [http://localhost:8080/alerts](http://localhost:8080/alerts)
