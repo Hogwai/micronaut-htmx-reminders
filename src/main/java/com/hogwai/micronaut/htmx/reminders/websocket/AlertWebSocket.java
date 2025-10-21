@@ -27,18 +27,18 @@ public class AlertWebSocket {
     @OnOpen
     public void onOpen(WebSocketSession session) {
         this.session = session;
-        LOG.info("WebSocket connecté");
+        LOG.info("WebSocket connected");
     }
 
     @OnClose
     public void onClose(WebSocketSession session) {
         this.session = null;
-        LOG.info("WebSocket déconnecté");
+        LOG.info("WebSocket disconnected");
     }
 
     @OnMessage
     public void onMessage(String message, WebSocketSession session) {
-        LOG.info("Message reçu: {}", message);
+        LOG.info("Message received: {}", message);
     }
 
     public void sendAlert(Alert alert) {
@@ -46,12 +46,12 @@ public class AlertWebSocket {
             try {
                 String json = objectMapper.writeValueAsString(alert);
                 session.sendSync(json);
-                LOG.info("Alerte envoyée via WebSocket: {}", alert.getTitle());
+                LOG.info("Alert sent via WebSocket: {}", alert.getTitle());
             } catch (Exception e) {
-                LOG.error("Erreur lors de l'envoi de l'alerte", e);
+                LOG.error("Error while sending the alert", e);
             }
         } else {
-            LOG.warn("Aucune session WebSocket active pour envoyer l'alerte");
+            LOG.warn("No open websocket session available");
         }
     }
 }
